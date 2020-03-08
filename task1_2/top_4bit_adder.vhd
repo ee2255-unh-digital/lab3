@@ -54,7 +54,7 @@ architecture behavior of top_4bit_adder is
 
     component bcd2_display
         port (
-            bin_input : in std_logic_vector(3 downto 0);
+            v : in std_logic_vector(3 downto 0);
             digit0_out : out std_logic_vector(6 downto 0);
             digit1_out : out std_logic
         );
@@ -62,7 +62,7 @@ architecture behavior of top_4bit_adder is
 
     begin
         -- disable led1 segment display
-        seg_led1_en <= '1';
+        seg_led1_en <= '0';
 
         -- wire pulldown component (SWTA switches)
         swta_pd: pulldown port map(
@@ -108,9 +108,9 @@ architecture behavior of top_4bit_adder is
 
         -- wire 2-digit BCD display
         bcd_disp: bcd2_display port map(
-            bin_input => s_out,
-            digit0_output => seg_ledmux_out,
-            digit1_output => led(7)
+            v => s_out,
+            digit0_out => seg_ledmux_out,
+            digit1_out => led(7)
         );
 
 end behavior;
