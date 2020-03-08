@@ -28,9 +28,9 @@ architecture behavior of top_4bit_adder is
     signal pd_swb_out : std_logic_vector(7 downto 0);
 
     -- internal nets for ripple carry adder
-    signal cout_0,cout_1,cout_2,cout_3 : std_logic;
     signal a_in, b_in, s_out : std_logic_vector(3 downto 0);
-    signal ci_in, co_out : std_logic;
+    signal cout_int : std_logic_vector(4 downto 0);
+    constant adder_cnt:integer:=4;
 
     -- pull-down component
 	component pulldown
@@ -70,14 +70,6 @@ architecture behavior of top_4bit_adder is
             clk => clk_in, 
             swt_state=> pd_swb_out
         );
-
-        -- Wire 4-bit ripple carry adder, add0 is LSB, add3 is MSB
-        add0: fulladder_dataflow port map(a_in(0), b_in(0), ci_in, cout_0, s_out(0));
-		add1: fulladder_dataflow port map(a_in(1), b_in(1), cout_0, cout_1, s_out(1));
-		add2: fulladder_dataflow port map(a_in(2), b_in(2), cout_1, cout_2, s_out(2));
-		add3: fulladder_dataflow port map(a_in(3), b_in(3), cout_2, cout_3, s_out(3));
-		
-        co_out <= cout_3;
         
         -- Map number (a) to switch A (DIP1 - DIP4)
         a_in(3) <= pd_swa_out(0); -- DIP1 (MSB)
@@ -90,15 +82,22 @@ architecture behavior of top_4bit_adder is
         b_in(2) <= pd_swb_out(1); -- DIP2
         b_in(1) <= pd_swb_out(2); -- DIP3
         b_in(0) <= pd_swb_out(3); -- DIP4 (LSB)
-        
-        -- Map ci_in to Switch B -> DIP8
-        ci_in <= pd_swb_out(7);
 
         -- Map Sum s_out to LED(3 - 0)
-        led(3 downto 0) <= s_out;
+        led(3 downto 0) <= s_out;  
 
         -- Map co_out to LED(4)
-        led(4) <= co_out;        
+        led(4) <= cout_int(4);     
+
+        -- Map ci_in to Switch B -> DIP8
+        cout_int(0) <= pd_swb_out(7);
+        
+        -- Wire 4-bit ripple carry adder, add0 is LSB, add3 is MSB
+        -- using a generate loop
+        adders:
+            for i in 0 to (adder_cnt - 1) generate
+                adder: fulladder_dataflow port map(a_in(i), b_in(i), cout_int(i), cout_int(i+1), s_out(i));
+            end generate;
 
 end behavior;
 		
