@@ -9,7 +9,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 
 entity bcd2_display is
-port (
+    port (
 		bin_input : in std_logic_vector(3 downto 0);
         digit0_out : out std_logic_vector(6 downto 0);
         digit1_out : out std_logic
