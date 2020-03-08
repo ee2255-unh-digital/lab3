@@ -9,8 +9,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 
 entity bcd2_display is
-port (
-		bin_input : in std_logic_vector(3 downto 0);
+    port (
+		v : in std_logic_vector(3 downto 0);
         digit0_out : out std_logic_vector(6 downto 0);
         digit1_out : out std_logic
 	);
@@ -49,13 +49,13 @@ architecture behavior of bcd2_display is
     begin
         -- wire comparator
         cmp: comparator port map(
-            v_in => bin_input,
+            v_in => v,
             z_out => z
         );
 
         -- wire circuit A
         cA: circuit_a port map(
-            v_in => bin_input,
+            v_in => v,
             a_out => a
         );
 
