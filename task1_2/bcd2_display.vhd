@@ -68,10 +68,10 @@ architecture behavior of bcd2_display is
         digit1_out <= z;
 
         -- mux
-        process(v, z, a)
+        process(bin_input, z, a)
             begin
             if z = '0' then
-                m <= v;
+                m <= bin_input;
             else
                 m <= a;
             end if;
