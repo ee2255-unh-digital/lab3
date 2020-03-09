@@ -22,7 +22,7 @@ set_io seg_ledmux_out[3] K4 -pullup no
 set_io seg_ledmux_out[4] N1 -pullup no
 set_io seg_ledmux_out[5] J3 -pullup no
 set_io seg_ledmux_out[6] J1 -pullup no
-set_io sed_led1_en H3 -pullup no
+set_io seg_led1_en H3 -pullup no
 set_io io_swt_b[0] C5 -pullup no
 set_io io_swt_b[1] A5 -pullup no
 set_io io_swt_b[2] C6 -pullup no
